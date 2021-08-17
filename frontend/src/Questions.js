@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Grid, Typography, Card, CardContent, Box} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import background from './img/homepage_bg_img.jpeg';
@@ -28,6 +28,15 @@ function Questions() {
 
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
+
+  const [questions, setQuestions] = useState([]);
+  useEffect(() => {
+    fetch("/questions/").then(res => {
+      if(res.ok) {
+        return res.json()
+      }
+    }).then(jsonRes => setQuestions(jsonRes.questionsJson))
+  })
 
   return (
     <div>
@@ -62,6 +71,17 @@ function Questions() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography variant="h4">Questions page</Typography>
+          <div>
+            {questions.map(question => 
+              <ul>
+                <li>{question.question}</li>
+                <ul>
+                  <li>{question.type}</li>
+                  <li>{question.id}</li>
+                </ul>
+              </ul>
+            )}
+          </div>
         </Grid>
       </Grid>
     </div>
