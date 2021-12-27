@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import Home from './Home';
 import Types from './Types';
-import {Route, Link} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import Appbar from './Appbar';
 
 function App() {
