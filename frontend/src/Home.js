@@ -1,5 +1,4 @@
 import React from 'react';
-import {Typography} from '@material-ui/core';
 import Questions from './Questions';
 import Results from './Results';
 
