@@ -1,6 +1,6 @@
 import React from 'react';
-import Questions from './Questions';
-import Results from './Results';
+import Questions from '../questions/Questions';
+import Results from '../results/Results';
 
 function Home() {
   return (

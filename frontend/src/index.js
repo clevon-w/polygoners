@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index/index.css';
+import App from './app/App';
+import reportWebVitals from './app/reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
-import theme from './theme.js';
+import theme from './app/theme.js';
 
 ReactDOM.render(
   <BrowserRouter>
