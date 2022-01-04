@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Grid, Typography, Card, CardContent, Box, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button, LinearProgress} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import background from './img/homepage_bg_img.jpeg';
+import background from '../img/homepage_bg_img.jpeg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
