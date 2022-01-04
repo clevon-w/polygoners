@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {Grid, Typography, Card, CardContent, Box, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button} from '@material-ui/core';
+import PropTypes from 'prop-types';
+import {Grid, Typography, Card, CardContent, Box, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button, LinearProgress} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import background from '../img/homepage_bg_img.jpeg';
 
@@ -23,6 +24,29 @@ const useStyles = makeStyles((theme) => ({
     width: 100,
   }
 }));
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
+LinearProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate and buffer variants.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
+};
 
 function Questions() {
 
@@ -102,8 +126,9 @@ function Questions() {
   });
 
   const [formData, updateFormData] = React.useState(initialFormData);
+  const [progress, setProgress] = React.useState(0);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     updateFormData({
       ...formData, // spread syntax which allows an iterable to be expanded whenever placed
       [e.target.name]: e.target.value.trim()
@@ -116,14 +141,21 @@ function Questions() {
     // ..code to submit form to backend here...
   }
 
+  async function handleClick(event) {
+    await handleChange(event);
+    const number_of_checked = document.querySelectorAll('div[class*=PrivateRadioButtonIcon-checked]').length;
+    const new_progress = Math.floor((number_of_checked / 60) * 100);
+    setProgress(new_progress);
+  }
+
   return (
     <div>
-      <Grid container direction="row" justifyContent="center" alignItems="center">
-        <Grid item xs={12} style={{ backgroundImage: `url(${background})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
-          <Grid container justifyContent="center" spacing={10}>
+      <Grid container direction="column">
+        <Grid container item alignItems='center' justifyContent='center' style={{ backgroundImage: `url(${background})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+          {/* <Grid container justifyContent="center" spacing={10}> */}
             {[0, 1, 2].map((value) => (
               <Grid key={value} item>
-                <Box my={10}>
+                {/* <Box my={10}> */}
                   <Card className={classes.root}>
                     <CardContent>
                       <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -142,39 +174,36 @@ function Questions() {
                       </Typography>
                     </CardContent>
                   </Card>
-                </Box>
+                {/* </Box> */}
               </Grid>
             ))}
+          {/* </Grid> */}
+        </Grid>
+        <Grid container item alignItems='center' justifyContent='center'>
+          <Grid item xs={12} md={6}>
+            <LinearProgressWithLabel value={progress} />
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h4">Questions page</Typography>
-          <form onSubmit={handleSubmit}> {/* instead of a div here should be a form with action as where in the backend u want to send it to as well as the method=post */}
+        {/* <Typography variant="h4">Questions page</Typography> */}
+        <form onSubmit={handleSubmit}> {/* instead of a div here should be a form with action as where in the backend u want to send it to as well as the method=post */}
+          <Grid container item direction="column" alignItems='center' justifyContent='center'>
             {questions.map(question => 
-              <FormControl component="fieldset" key={question.type + question.id} >
-                <FormLabel component="legend">{question.question}</FormLabel>
-                <RadioGroup aria-label="question_score" name={question.type + question.id} row style={{display: 'block'}}>
-                  <FormControlLabel value="1" control={<Radio />} onChange={handleChange} />
-                  <FormControlLabel value="2" control={<Radio />} onChange={handleChange} />
-                  <FormControlLabel value="3" control={<Radio />} onChange={handleChange} />
-                  <FormControlLabel value="4" control={<Radio />} onChange={handleChange} />
-                  <FormControlLabel value="5" control={<Radio />} onChange={handleChange} />
-                </RadioGroup>
-              </FormControl>
+              <Grid item xs={12} md={6}>
+                <FormControl component="fieldset" key={question.type + question.id} >
+                  <FormLabel component="legend">{question.question}</FormLabel>
+                  <RadioGroup aria-label="question_score" name={question.type + question.id} row style={{display: 'block'}}>
+                    <FormControlLabel value="1" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                    <FormControlLabel value="2" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                    <FormControlLabel value="3" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                    <FormControlLabel value="4" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                    <FormControlLabel value="5" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>  
             )}
-            {/* <FormControl component="fieldset">
-              <FormLabel component="legend">DUMMY QUESTION</FormLabel>
-              <RadioGroup aria-label="question_score" name="SOMENAME" row style={{display: 'block'}}>
-                <FormControlLabel value="1" control={<Radio />} />
-                <FormControlLabel value="2" control={<Radio />} />
-                <FormControlLabel value="3" control={<Radio />} />
-                <FormControlLabel value="4" control={<Radio />} />
-                <FormControlLabel value="5" control={<Radio />} />
-              </RadioGroup>
-            </FormControl> */}
             <Button type="submit">Submit</Button>
-          </form>
-        </Grid>
+          </Grid>
+        </form>
       </Grid>
     </div>
   );
