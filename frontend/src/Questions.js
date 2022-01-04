@@ -150,8 +150,8 @@ function Questions() {
 
   return (
     <div>
-      <Grid container direction="row" justifyContent="center" alignItems="center">
-        <Grid container item xs={12} alignItems='center' justifyContent='center' style={{ backgroundImage: `url(${background})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+      <Grid container direction="column">
+        <Grid container item alignItems='center' justifyContent='center' style={{ backgroundImage: `url(${background})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
           {/* <Grid container justifyContent="center" spacing={10}> */}
             {[0, 1, 2].map((value) => (
               <Grid key={value} item>
@@ -179,37 +179,31 @@ function Questions() {
             ))}
           {/* </Grid> */}
         </Grid>
-        <Grid item xs={12} md={6}>
-          <LinearProgressWithLabel value={progress} />
+        <Grid container item alignItems='center' justifyContent='center'>
+          <Grid item xs={12} md={6}>
+            <LinearProgressWithLabel value={progress} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h4">Questions page</Typography>
-          <form onSubmit={handleSubmit}> {/* instead of a div here should be a form with action as where in the backend u want to send it to as well as the method=post */}
+        {/* <Typography variant="h4">Questions page</Typography> */}
+        <form onSubmit={handleSubmit}> {/* instead of a div here should be a form with action as where in the backend u want to send it to as well as the method=post */}
+          <Grid container item direction="column" alignItems='center' justifyContent='center'>
             {questions.map(question => 
-              <FormControl component="fieldset" key={question.type + question.id} >
-                <FormLabel component="legend">{question.question}</FormLabel>
-                <RadioGroup aria-label="question_score" name={question.type + question.id} row style={{display: 'block'}}>
-                  <FormControlLabel value="1" control={<Radio />} onChange={handleChange} onClick={handleClick} />
-                  <FormControlLabel value="2" control={<Radio />} onChange={handleChange} onClick={handleClick} />
-                  <FormControlLabel value="3" control={<Radio />} onChange={handleChange} onClick={handleClick} />
-                  <FormControlLabel value="4" control={<Radio />} onChange={handleChange} onClick={handleClick} />
-                  <FormControlLabel value="5" control={<Radio />} onChange={handleChange} onClick={handleClick} />
-                </RadioGroup>
-              </FormControl>
+              <Grid item xs={12} md={6}>
+                <FormControl component="fieldset" key={question.type + question.id} >
+                  <FormLabel component="legend">{question.question}</FormLabel>
+                  <RadioGroup aria-label="question_score" name={question.type + question.id} row style={{display: 'block'}}>
+                    <FormControlLabel value="1" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                    <FormControlLabel value="2" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                    <FormControlLabel value="3" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                    <FormControlLabel value="4" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                    <FormControlLabel value="5" control={<Radio />} onChange={handleChange} onClick={handleClick} />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>  
             )}
-            {/* <FormControl component="fieldset">
-              <FormLabel component="legend">DUMMY QUESTION</FormLabel>
-              <RadioGroup aria-label="question_score" name="SOMENAME" row style={{display: 'block'}}>
-                <FormControlLabel value="1" control={<Radio />} />
-                <FormControlLabel value="2" control={<Radio />} />
-                <FormControlLabel value="3" control={<Radio />} />
-                <FormControlLabel value="4" control={<Radio />} />
-                <FormControlLabel value="5" control={<Radio />} />
-              </RadioGroup>
-            </FormControl> */}
             <Button type="submit">Submit</Button>
-          </form>
-        </Grid>
+          </Grid>
+        </form>
       </Grid>
     </div>
   );
